@@ -10,7 +10,7 @@ import {
     DialogContent,
     DialogTitle
 } from '@mui/material';
-import { SimpleTreeView, TreeItem } from '@mui/x-tree-view'; // Изменённый импорт
+import { SimpleTreeView, TreeItem } from '@mui/x-tree-view';
 import {
     Add as AddIcon,
     ExpandMore as ExpandMoreIcon,
@@ -89,7 +89,6 @@ const CourseStructure: FC<ICourseStructureProps> = ({ course, onUpdateCourse }) 
                 ))}
             </SimpleTreeView>
 
-            {/* Диалог добавления модуля */}
             <Dialog open={openModuleDialog} onClose={() => setOpenModuleDialog(false)}>
                 <DialogTitle>Добавить новый модуль</DialogTitle>
                 <DialogContent>

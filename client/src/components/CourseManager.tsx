@@ -27,13 +27,6 @@ const CoursesManager: React.FC = () => {
         <Box sx={{ p: 3 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
                 <Typography variant="h4">Управление курсами</Typography>
-                <Button
-                    variant="contained"
-                    startIcon={<AddIcon />}
-                    onClick={() => setOpenCourseDialog(true)}
-                >
-                    Добавить курс
-                </Button>
             </Box>
 
             <CoursesList

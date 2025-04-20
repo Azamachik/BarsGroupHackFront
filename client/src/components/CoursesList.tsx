@@ -38,6 +38,7 @@ import {
     ITextLessonContent,
     IVideoLessonContent, IQuizLessonContent, ICoursesListProps
 } from "../types/types";
+import ConfirmDialog from "./ConfirmDialog";
 
 const CoursesList: React.FC<ICoursesListProps> = ({ courses, onUpdateCourse }) => {
     const {
@@ -55,8 +56,17 @@ const CoursesList: React.FC<ICoursesListProps> = ({ courses, onUpdateCourse }) =
         deleteLesson,
         resetError
     } = useCourses();
-
-    // const [courses, onUpdateCourse] = useState<ICourse[]>([]);
+    const [deleteDialog, setDeleteDialog] = useState({
+        open: false,
+        type: '',
+        data: {
+            courseId: '',
+            moduleId: '',
+            lessonId: ''
+        },
+        title: '',
+        message: ''
+    });
     const [expandedCourses, setExpandedCourses] = useState<Record<string, boolean>>({});
     const [expandedModules, setExpandedModules] = useState<Record<string, boolean>>({});
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -71,8 +81,8 @@ const CoursesList: React.FC<ICoursesListProps> = ({ courses, onUpdateCourse }) =
     const [contentType, setContentType] = useState<'text' | 'video' | 'quiz'>('text');
     const [content, setContent] = useState('');
     const [quizQuestions, setQuizQuestions] = useState<IQuizQuestion[]>([]);
+    const [deleteError, setDeleteError] = useState('');
 
-    // Загрузка курсов при монтировании
     useEffect(() => {
         const loadCourses = async () => {
             try {
@@ -85,7 +95,55 @@ const CoursesList: React.FC<ICoursesListProps> = ({ courses, onUpdateCourse }) =
         loadCourses();
     }, []);
 
-    // Обработчики раскрытия/сворачивания
+    const handleDeleteClick = (type: 'course' | 'module' | 'lesson', ids: { courseId?: string, moduleId?: string, lessonId?: string }) => {
+        const messages = {
+            course: 'Вы уверены, что хотите удалить этот курс? Это действие нельзя отменить.',
+            module: 'Вы уверены, что хотите удалить этот модуль? Все уроки в нем будут удалены.',
+            lesson: 'Вы уверены, что хотите удалить этот урок?'
+        };
+
+        setDeleteDialog({
+            open: true,
+            type,
+            data: {
+                courseId: ids.courseId || '',
+                moduleId: ids.moduleId || '',
+                lessonId: ids.lessonId || ''
+            },
+            title: `Удаление ${type === 'course' ? 'курса' : type === 'module' ? 'модуля' : 'урока'}`,
+            message: messages[type]
+        });
+    };
+
+    const handleConfirmDelete = async () => {
+        try {
+            // setLoading(true);
+            const { courseId, moduleId, lessonId } = deleteDialog.data;
+
+            switch (deleteDialog.type) {
+                case 'course':
+                    await deleteCourse(courseId);
+                    break;
+                case 'module':
+                    await deleteModule(courseId, moduleId);
+                    break;
+                case 'lesson':
+                    await deleteLesson(courseId, moduleId, lessonId);
+                    break;
+            }
+
+            const updatedCourses = await fetchCourses();
+            onUpdateCourse(updatedCourses);
+        } catch (err) {
+            setDeleteError('Не удалось выполнить удаление');
+            console.error(err);
+        }
+        finally {
+            setDeleteDialog({ ...deleteDialog, open: false });
+            // setLoading(false);
+        }
+    };
+
     const toggleCourse = (courseId: string) => {
         setExpandedCourses(prev => ({
             ...prev,
@@ -151,7 +209,6 @@ const CoursesList: React.FC<ICoursesListProps> = ({ courses, onUpdateCourse }) =
         setQuizQuestions([]);
     };
 
-    // Обработчики CRUD операций
     const handleAddCourse = async () => {
         try {
             const newCourse = await createCourse({ title, description });
@@ -567,9 +624,12 @@ const CoursesList: React.FC<ICoursesListProps> = ({ courses, onUpdateCourse }) =
                                     <Tooltip title="Удалить курс">
                                         <IconButton
                                             edge="end"
-                                            onClick={() => handleDeleteCourse(course.id)}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleDeleteClick('course', { courseId: course.id });
+                                            }}
                                         >
-                                            <Delete />
+                                            <Delete fontSize="small" />
                                         </IconButton>
                                     </Tooltip>
                                 </Box>
@@ -616,9 +676,12 @@ const CoursesList: React.FC<ICoursesListProps> = ({ courses, onUpdateCourse }) =
                                                     <Tooltip title="Удалить модуль">
                                                         <IconButton
                                                             edge="end"
-                                                            onClick={() => handleDeleteModule(course.id, module.id)}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                handleDeleteClick('module', { courseId: course.id, moduleId: module.id });
+                                                            }}
                                                         >
-                                                            <Delete />
+                                                            <Delete fontSize="small" />
                                                         </IconButton>
                                                     </Tooltip>
                                                 </Box>
@@ -652,13 +715,16 @@ const CoursesList: React.FC<ICoursesListProps> = ({ courses, onUpdateCourse }) =
                                                                 <Tooltip title="Удалить урок">
                                                                     <IconButton
                                                                         edge="end"
-                                                                        onClick={() => handleDeleteLesson(
-                                                                            course.id,
-                                                                            module.id,
-                                                                            lesson.id
-                                                                        )}
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            handleDeleteClick('lesson', {
+                                                                                courseId: course.id,
+                                                                                moduleId: module.id,
+                                                                                lessonId: lesson.id
+                                                                            });
+                                                                        }}
                                                                     >
-                                                                        <Delete />
+                                                                        <Delete fontSize="small" />
                                                                     </IconButton>
                                                                 </Tooltip>
                                                             </Box>
@@ -786,6 +852,14 @@ const CoursesList: React.FC<ICoursesListProps> = ({ courses, onUpdateCourse }) =
                     </Button>
                 </DialogActions>
             </Dialog>
+            <ConfirmDialog
+                open={deleteDialog.open}
+                title={deleteDialog.title}
+                message={deleteDialog.message}
+                onConfirm={handleConfirmDelete}
+                onCancel={() => setDeleteDialog({ ...deleteDialog, open: false })}
+                confirmText={loading ? 'Удаление...' : 'Удалить'}
+            />
         </Box>
     );
 };

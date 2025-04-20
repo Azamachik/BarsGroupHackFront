@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {BrowserRouter, createBrowserRouter, Route, Routes} from "react-router-dom";
 import LoginForm from "./LoginForm";
 import PageNotFound from "../pages/PageNotFound";
 import RegisterForm from "./RegisterForm";
@@ -7,10 +7,8 @@ import AdminForm from "./AdminForm";
 import HomePage from "../pages/HomePage";
 import AdminPage from "../pages/AdminPage";
 import TableUsers from "./TableUsers";
-import CoursesList from "./CoursesList";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import CourseManager from "./CourseManager";
+
 
 const AppRouter = () => {
     return (

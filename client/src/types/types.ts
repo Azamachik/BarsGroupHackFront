@@ -1,5 +1,5 @@
-import { ReactElement } from "react";
-import { AxiosError, AxiosResponse } from "axios";
+import {ReactElement} from "react";
+import {AxiosError, AxiosResponse} from "axios";
 
 export interface IUser {
     id: number;
@@ -77,9 +77,24 @@ export interface ICourseStructureProps {
 }
 
 export interface ICourseCreateDialogProps {
-    open: boolean;
-    onClose: () => void;
-    onAdd: (title: string, description?: string) => void;
+    open: boolean,
+    onClose: () => void,
+    onAdd: (title: string, description?: string) => void,
+    type?: "course" | "module" | "lesson" | null,
+    context?: { courseId?: string; moduleId?: string } | null,
+    editItem?: ICourse | IModule | ILesson | null,
+    title?: string,
+    description?: string,
+    contentType?: "text" | "video" | "quiz",
+    content?: string,
+    quizQuestions?: IQuizQuestion[],
+    onTitleChange?: ({e}: { e: any }) => void,
+    onDescriptionChange?: ({e}: { e: any }) => void,
+    onContentTypeChange?: (value: (((prevState: ("text" | "video" | "quiz")) => ("text" | "video" | "quiz")) | "text" | "video" | "quiz")) => void,
+    onContentChange?: ({e}: { e: any }) => void,
+    onQuizQuestionsChange?: (value: (((prevState: IQuizQuestion[]) => IQuizQuestion[]) | IQuizQuestion[])) => void,
+    onSubmit?: () => Promise<void>,
+    loading?: boolean
 }
 
 export interface IModuleCreateDialogProps {
@@ -117,12 +132,6 @@ export interface IAnswerOption {
     isCorrect: boolean;
 }
 
-// export interface IQuizContent {
-//     type: 'quiz';
-//     questions: IQuizQuestion[];
-//     passingScore?: number;
-// }
-
 export interface ITextLessonContent {
     type: 'text';
     content: string;
@@ -140,11 +149,6 @@ export interface IQuizLessonContent {
 }
 
 export type ILessonContent = ITextLessonContent | IVideoLessonContent | IQuizLessonContent;
-
-// // @ts-ignore
-// export interface ILessonContent extends ITextContent, IVideoContent, IQuizContent {
-//     type: 'text' | 'video' | 'quiz';
-// }
 
 export interface IApiError {
     message: string;
@@ -179,4 +183,24 @@ export interface IQuizQuestion {
 export interface IQuizEditorProps {
     questions: IQuizQuestion[];
     onQuestionsChange: (questions: IQuizQuestion[]) => void;
+}
+
+export interface IQuestionEditorProps {
+    question: IQuizQuestion;
+    onQuestionChange: (field: keyof IQuizQuestion, value: string) => void;
+    onOptionChange: (optionId: string, text: string) => void;
+    onToggleCorrect: (optionId: string) => void;
+    onAddOption: () => void;
+    onDeleteOption: (optionId: string) => void;
+}
+
+export interface IConfirmDialogProps {
+    open: boolean;
+    title: string;
+    message: string;
+    onConfirm: () => void;
+    onCancel: () => void;
+    confirmText?: string;
+    cancelText?: string
+    confirmDisabled?: boolean;
 }

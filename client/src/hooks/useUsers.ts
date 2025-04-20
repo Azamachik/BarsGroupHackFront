@@ -14,7 +14,7 @@ const useUsers = () => {
             setUsers(response.data.filter(user => !user.isDeleted));
             setError(null);
         } catch (err) {
-            setError('Ошибка при загрузке пользователей');
+            setError('Failed to fetch users');
             console.error('Error fetching users:', err);
         } finally {
             setLoading(false);
