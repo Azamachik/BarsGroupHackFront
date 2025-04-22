@@ -13,29 +13,10 @@ import {
     Box,
     CircularProgress
 } from '@mui/material';
-import { ICourse, IModule, ILesson } from '../types/types';
+import {ICourse, IModule, ILesson, ICourseDialogProps} from '../types/types';
 
-interface CourseDialogProps {
-    open: boolean;
-    type: 'course' | 'module' | 'lesson' | null;
-    context: { courseId?: string; moduleId?: string } | null;
-    editItem: ICourse | IModule | ILesson | null;
-    title: string;
-    description: string;
-    contentType: 'text' | 'video' | 'quiz';
-    content: string;
-    quizQuestions: any[];
-    onClose: () => void;
-    onTitleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onDescriptionChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onContentTypeChange: (value: 'text' | 'video' | 'quiz') => void;
-    onContentChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onQuizQuestionsChange: (questions: any[]) => void;
-    onSubmit: () => void;
-    loading: boolean;
-}
 
-const CourseDialog: React.FC<CourseDialogProps> = ({
+const CourseDialog: React.FC<ICourseDialogProps> = ({
                                                        open,
                                                        type,
                                                        context,
@@ -52,7 +33,8 @@ const CourseDialog: React.FC<CourseDialogProps> = ({
                                                        onContentChange,
                                                        onQuizQuestionsChange,
                                                        onSubmit,
-                                                       loading
+                                                       loading,
+                                                       onAdd
                                                    }) => {
     const getDialogTitle = () => {
         if (!type) return '';
@@ -164,7 +146,7 @@ const CourseDialog: React.FC<CourseDialogProps> = ({
                     variant="contained"
                     disabled={!title || loading}
                 >
-                    {loading ? <CircularProgress size={24} /> : editItem ? 'Сохранить' : 'Создать'}
+                    {loading ? <CircularProgress size={24}/> : editItem ? 'Сохранить' : 'Создать'}
                 </Button>
             </DialogActions>
         </Dialog>

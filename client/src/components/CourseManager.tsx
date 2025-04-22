@@ -24,7 +24,7 @@ const CoursesManager: React.FC = () => {
     };
 
     return (
-        <Box sx={{ p: 3 }}>
+        <Box>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
                 <Typography variant="h4">Управление курсами</Typography>
             </Box>

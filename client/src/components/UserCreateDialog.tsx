@@ -8,6 +8,8 @@ const UserCreateDialog: FC<IUserCreateDialogProps> = ({ open, onClose, onSubmit 
         name: '',
         surname: '',
         email: '',
+        phone: '',
+        roles: [],
         age: 0,
         joinDate: new Date().toISOString().split('T')[0],
         lastLogin: new Date().toISOString()
@@ -31,6 +33,8 @@ const UserCreateDialog: FC<IUserCreateDialogProps> = ({ open, onClose, onSubmit 
                 name: '',
                 surname: '',
                 email: '',
+                roles: [],
+                phone: '',
                 age: 0,
             });
         }
@@ -41,6 +45,8 @@ const UserCreateDialog: FC<IUserCreateDialogProps> = ({ open, onClose, onSubmit 
             name: '',
             surname: '',
             email: '',
+            roles: [],
+            phone: '',
             age: 0,
             joinDate: new Date().toISOString().split('T')[0],
             lastLogin: new Date().toISOString()

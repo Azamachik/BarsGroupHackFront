@@ -1,6 +1,5 @@
 import axios, {
     AxiosInstance,
-    AxiosRequestConfig,
     AxiosError,
     AxiosResponse,
     InternalAxiosRequestConfig
@@ -16,14 +15,12 @@ const apiClient: AxiosInstance = axios.create({
     withCredentials: false,
 });
 
-// Интерцептор запросов с правильными типами
 apiClient.interceptors.request.use(
     (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-        // токен авторизации:
-        // const token = localStorage.getItem('token');
-        // if (token && config.headers) {
-        //   config.headers.Authorization = `Bearer ${token}`;
-        // }
+        const token = localStorage.getItem('token');
+        if (token && config.headers) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
         return config;
     },
     (error: AxiosError): Promise<AxiosError> => {
@@ -31,25 +28,13 @@ apiClient.interceptors.request.use(
     }
 );
 
-// Интерцептор ответов с правильными типами
 apiClient.interceptors.response.use(
-    (response: AxiosResponse): AxiosResponse => {
-        // Можно обработать успешные ответы
-        return response;
-    },
+    (response: AxiosResponse): AxiosResponse => response,
     (error: AxiosError): Promise<AxiosError> => {
-        if (error.response) {
-            console.error('API Error:', {
-                status: error.response.status,
-                data: error.response.data,
-                headers: error.response.headers,
-            });
-        } else if (error.request) {
-            console.error('API No Response:', error.request);
-        } else {
-            console.error('API Request Error:', error.message);
+        if (error.response?.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = '/login';
         }
-
         return Promise.reject(error);
     }
 );

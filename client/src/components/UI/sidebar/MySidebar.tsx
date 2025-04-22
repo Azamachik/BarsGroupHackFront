@@ -14,13 +14,13 @@ const MySidebar = () => {
                         <Link to={'/admin/users'}><FontAwesomeIcon icon={faUser}/> Пользователи </Link>
                     </li>
                     <li>
-                        <Link to={''}><FontAwesomeIcon icon={faChartSimple}/> Статистика</Link>
+                        <Link to={'/admin/analytics'}><FontAwesomeIcon icon={faChartSimple}/> Аналитика</Link>
                     </li>
                     <li>
                         <Link to={'/admin/courses'}><FontAwesomeIcon icon={faBook}/> Курсы</Link>
                     </li>
                     <li>
-                        <Link to={''}><FontAwesomeIcon icon={faSquarePollVertical}/> Результаты тестов</Link>
+                        <Link to={'/admin/tests'}><FontAwesomeIcon icon={faSquarePollVertical}/> Результаты тестов</Link>
                     </li>
                 </ul>
             </div>

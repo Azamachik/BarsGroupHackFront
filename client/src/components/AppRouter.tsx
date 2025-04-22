@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter, createBrowserRouter, Route, Routes} from "react-router-dom";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 import LoginForm from "./LoginForm";
 import PageNotFound from "../pages/PageNotFound";
 import RegisterForm from "./RegisterForm";
@@ -8,24 +8,29 @@ import HomePage from "../pages/HomePage";
 import AdminPage from "../pages/AdminPage";
 import TableUsers from "./TableUsers";
 import CourseManager from "./CourseManager";
-
+import {ProtectedRoute} from "./ProtectedRoute";
+import {useAuth} from '../hooks/useAuth'
+import MySpinner from "./UI/spinner/MySpinner";
 
 const AppRouter = () => {
+    const { isAuthenticated } = useAuth();
+
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<HomePage />}/>
-                <Route path="/login" element={<LoginForm title={"Авторизируйтесь"}/>}/>
-                <Route path="/register" element={<RegisterForm title={"Регистрация"} />}/>
-                <Route path="/admin-login" element={<AdminForm title={"Панель администрирования"}/>}/>
-                <Route path="/admin" element={<AdminPage />}>
+        <Routes>
+            <Route path="/" element={<HomePage />}/>
+            <Route path="/login" element={<LoginForm title={"Авторизируйтесь"}/>}/>
+            <Route path="/register" element={<RegisterForm title={"Регистрация"} />}/>
+            <Route path="/admin-login" element={<AdminForm title={"Панель администрирования"}/>}/>
+            {/*<Route element={<ProtectedRoute isAllowed={isAuthenticated()} redirectPath='/admin-login' />}>*/}
+                <Route path="/admin" element={<AdminPage />} >
                     <Route path="users" element={<TableUsers />}/>
                     <Route path="courses" element={<CourseManager />}/>
-                    <Route path="statics" element={<TableUsers />}/>
+                    <Route path="analytics" element={<MySpinner />}/>
+                    <Route path="tests" element={<MySpinner />}/>
                 </Route>
-                <Route path="*" element={<PageNotFound />}/>
-            </Routes>
-        </BrowserRouter>
+            {/*</Route>*/}
+            <Route path="*" element={<PageNotFound />}/>
+        </Routes>
     );
 };
 

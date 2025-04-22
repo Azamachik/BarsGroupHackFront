@@ -5,10 +5,9 @@ import {faYandex, faVk} from "@fortawesome/free-brands-svg-icons"
 import {Link, NavLink, useNavigate} from "react-router-dom";
 import MyButton from "./UI/button/MyButton";
 import MyInput from "./UI/input/MyInput";
+import {ILoginProps, ILoginResponse, ILoginFormData, IErrorResponse} from "../types/types";
+import axios, {AxiosError} from "axios";
 
-interface ILoginProps {
-    title: string;
-}
 
 const LoginForm: FC<ILoginProps> = ({title}) => {
     const navigate = useNavigate();
@@ -16,6 +15,7 @@ const LoginForm: FC<ILoginProps> = ({title}) => {
         email: "",
         password: "",
     });
+    const [error, setError] = useState<string | null>(null);
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = event.target;
         setFormLoginData((prev) => ({
@@ -25,36 +25,41 @@ const LoginForm: FC<ILoginProps> = ({title}) => {
     };
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setError(null);
 
         try {
-            const response = await fetch('http://localhost:5000/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
+            const { data } = await axios.post<ILoginResponse>(
+                'http://localhost:5000/api/login',
+                {
                     email: formLoginData.email,
                     password: formLoginData.password
-                })
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message || 'Ошибка авторизации');
-            }
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
 
             console.log('Успешный вход:', data);
-            // Сохраняем токен
             localStorage.setItem('token', data.token);
-            setFormLoginData({email: "", password: ""});
-            // Перенаправляем пользователя
+            setFormLoginData({ email: "", password: "" });
             navigate("/");
 
-        } catch (error) {
+        } catch (err) {
+            const error = err as AxiosError<IErrorResponse>;
+            if (error.response) {
+                const errorMessage = error.response.data.message ||
+                    (error.response.data.errors
+                        ? Object.values(error.response.data.errors).flat().join(', ')
+                        : 'Ошибка авторизации');
+                setError(errorMessage);
+            } else if (error.request) {
+                setError('Сервер не отвечает');
+            } else {
+                setError('Ошибка при отправке запроса');
+            }
             console.error('Ошибка:', error);
-            // Можно добавить состояние для отображения ошибки
-            // setError(error.message);
         }
     };
     return (

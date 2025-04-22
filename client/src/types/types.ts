@@ -1,5 +1,6 @@
-import {ReactElement} from "react";
+import React, {ReactElement} from "react";
 import {AxiosError, AxiosResponse} from "axios";
+
 
 export interface IUser {
     id: number;
@@ -7,11 +8,17 @@ export interface IUser {
     name: string;
     surname: string;
     email: string;
+    roles: string[];
     phone?: string;
     age?: number;
     joinDate?: string;
     lastLogin?: string;
     isDeleted?: boolean;
+}
+
+export interface IAuthUser {
+    id: number;
+    roles: string[];
 }
 
 export interface IUserCreateDialogProps {
@@ -25,7 +32,6 @@ export interface ITableUsersContext {
     loading: boolean;
     error: string | null;
 
-    // Основные CRUD операции
     addUser: (user: Omit<IUser, 'id'>) => Promise<boolean>;
     deleteUser: (id: number) => Promise<boolean>;
     updateUser: (id: number, userData: Partial<IUser>) => Promise<boolean>;
@@ -76,25 +82,25 @@ export interface ICourseStructureProps {
     onUpdateCourse: (course: ICourse) => void;
 }
 
-export interface ICourseCreateDialogProps {
+export interface ICourseDialogProps {
     open: boolean,
-    onClose: () => void,
-    onAdd: (title: string, description?: string) => void,
-    type?: "course" | "module" | "lesson" | null,
+    type?: 'course' | 'module' | 'lesson' | null,
     context?: { courseId?: string; moduleId?: string } | null,
     editItem?: ICourse | IModule | ILesson | null,
     title?: string,
     description?: string,
-    contentType?: "text" | "video" | "quiz",
+    contentType?: 'text' | 'video' | 'quiz',
     content?: string,
-    quizQuestions?: IQuizQuestion[],
-    onTitleChange?: ({e}: { e: any }) => void,
-    onDescriptionChange?: ({e}: { e: any }) => void,
-    onContentTypeChange?: (value: (((prevState: ("text" | "video" | "quiz")) => ("text" | "video" | "quiz")) | "text" | "video" | "quiz")) => void,
-    onContentChange?: ({e}: { e: any }) => void,
-    onQuizQuestionsChange?: (value: (((prevState: IQuizQuestion[]) => IQuizQuestion[]) | IQuizQuestion[])) => void,
-    onSubmit?: () => Promise<void>,
-    loading?: boolean
+    quizQuestions?: any[],
+    onClose: () => void,
+    onTitleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    onDescriptionChange?: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    onContentTypeChange?: (value: 'text' | 'video' | 'quiz') => void,
+    onContentChange?: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    onQuizQuestionsChange?: (questions: any[]) => void,
+    onSubmit?: () => void,
+    loading?: boolean,
+    onAdd?: (title: string, description?: string) => void
 }
 
 export interface IModuleCreateDialogProps {
@@ -203,4 +209,38 @@ export interface IConfirmDialogProps {
     confirmText?: string;
     cancelText?: string
     confirmDisabled?: boolean;
+}
+
+export interface IProtectedRouteProps {
+    isAllowed: boolean;
+    redirectPath?: string;
+    children?: React.ReactNode;
+}
+
+export interface ILoginProps {
+    title: string;
+}
+
+export interface ILoginFormData {
+    email: string;
+    password: string;
+}
+
+export interface ILoginResponse {
+    token: string;
+    user?: {
+        id: string;
+        email: string;
+        name: string;
+    };
+}
+
+export interface IErrorResponse {
+    message: string;
+    errors?: Record<string, string[]>;
+}
+export interface IMySpinnerProps {
+    size?: number;
+    color?: string;
+    className?: string;
 }

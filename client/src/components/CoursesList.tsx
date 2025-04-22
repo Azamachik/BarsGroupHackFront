@@ -39,6 +39,7 @@ import {
     IVideoLessonContent, IQuizLessonContent, ICoursesListProps
 } from "../types/types";
 import ConfirmDialog from "./ConfirmDialog";
+import MySpinner from "./UI/spinner/MySpinner";
 
 const CoursesList: React.FC<ICoursesListProps> = ({ courses, onUpdateCourse }) => {
     const {
@@ -572,15 +573,22 @@ const CoursesList: React.FC<ICoursesListProps> = ({ courses, onUpdateCourse }) =
 
     if (loading && courses.length === 0) {
         return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-                <CircularProgress />
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100vh'
+                }}
+            >
+                <MySpinner />
             </Box>
         );
     }
 
     if (error) {
         return (
-            <Alert severity="error" onClose={resetError}>
+            <Alert severity="error">
                 {error}
             </Alert>
         );
@@ -588,7 +596,6 @@ const CoursesList: React.FC<ICoursesListProps> = ({ courses, onUpdateCourse }) =
 
     return (
         <Box sx={{ width: '100%', p: 2 }}>
-            {/* Кнопка добавления курса */}
             <Button
                 variant="contained"
                 startIcon={<Add />}
@@ -598,7 +605,6 @@ const CoursesList: React.FC<ICoursesListProps> = ({ courses, onUpdateCourse }) =
                 Добавить курс
             </Button>
 
-            {/* Список курсов */}
             <List>
                 {courses.map((course) => (
                     <React.Fragment key={course.id}>

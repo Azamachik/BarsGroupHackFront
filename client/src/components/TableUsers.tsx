@@ -29,6 +29,7 @@ import {IUser, ITableUsersContext} from "../types/types"
 import UserCreateDialog from "./UserCreateDialog";
 import {data, useOutletContext} from "react-router-dom";
 import {ruRU} from "@mui/x-data-grid/locales";
+import MySpinner from "./UI/spinner/MySpinner";
 
 const TableUsers = () => {
     const {
@@ -192,12 +193,16 @@ const TableUsers = () => {
             width: 70,
         },
         {
+            field: 'role',
+            headerName: 'Роль',
+            type: 'string',
+            width: 120,
+        },
+        {
             field: 'joinDate',
             headerName: 'Присоединился',
             width: 140,
             valueFormatter: (params: { value: Date | string | null } | null) => {
-                // if (params)
-                //     console.log(params?.value);
                 if (!params?.value) return 'Нет данных';
                 return params.value;
             },
@@ -218,11 +223,28 @@ const TableUsers = () => {
         },
     ];
 
-    if (loading) return <Typography>Загрузка...</Typography>;
-    if (error) return <Typography color="error">{error}</Typography>;
-    // console.log('Данные пользователей:', data[0].joinDate);
+    if (loading) return (
+        <Box
+            sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100vh'
+            }}
+        >
+            <MySpinner />
+        </Box>
+    );
+    if (error) return (
+        <Alert severity="error">
+            {error}
+        </Alert>
+    )
     return (
-        <Box sx={{ flex: 1, p: 3, overflow: 'auto' }}>
+        <Box sx={{ flex: 1, overflow: 'auto' }}>
+            <Typography variant="h4" gutterBottom>
+                Пользователи
+            </Typography>
             <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
                 <Button
                     size="small"
