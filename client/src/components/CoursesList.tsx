@@ -589,7 +589,7 @@ const CoursesList: React.FC<ICoursesListProps> = ({ courses, onUpdateCourse }) =
     if (error) {
         return (
             <Alert severity="error">
-                {error}
+                Ошибка загрузки данных: {error}
             </Alert>
         );
     }

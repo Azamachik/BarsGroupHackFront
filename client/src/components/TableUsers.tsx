@@ -16,7 +16,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import {
     Alert,
-    Button,
+    Button, Chip,
     Dialog, DialogActions,
     DialogContent,
     DialogContentText,
@@ -208,8 +208,8 @@ const TableUsers = () => {
             },
         },
         {
-            field: 'lastLogin',
-            headerName: 'Последний вход',
+            field: 'lastActive',
+            headerName: 'Последняя активность',
             width: 160,
             valueFormatter: (params: { value: Date | string | null } | null) => params?.value || 'Нет данных'
         },
@@ -218,8 +218,12 @@ const TableUsers = () => {
             headerName: 'Статус',
             width: 120,
             renderCell: (params) => (
-                params.value ? 'Удален' : 'Активен'
-            ),
+                <Chip
+                    label={params.value ? "Удален": "Активен"}
+                    color={params.value ? 'error' : 'success'}
+                    size="small"
+                />
+            )
         },
     ];
 
@@ -237,7 +241,7 @@ const TableUsers = () => {
     );
     if (error) return (
         <Alert severity="error">
-            {error}
+            Ошибка загрузки данных: {error}
         </Alert>
     )
     return (

@@ -8,12 +8,23 @@ export interface IUser {
     name: string;
     surname: string;
     email: string;
-    roles: string[];
+    role: string;
     phone?: string;
     age?: number;
     joinDate?: string;
-    lastLogin?: string;
+    lastActive?: string;
     isDeleted?: boolean;
+    courses?: {
+        id: string;
+        name: string;
+        score: number;
+        completed: boolean;
+    }[];
+    stats?: {
+        totalCourses: number;
+        completedCourses: number;
+        averageScore: number;
+    };
 }
 
 export interface IAuthUser {
@@ -243,4 +254,13 @@ export interface IMySpinnerProps {
     size?: number;
     color?: string;
     className?: string;
+}
+
+export interface IProgress {
+    userId: string;
+    courseId: string;
+    moduleId: string;
+    score: number;
+    completionDate: Date;
+    status: 'started' | 'completed' | 'failed';
 }

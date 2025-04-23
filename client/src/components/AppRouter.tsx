@@ -11,6 +11,7 @@ import CourseManager from "./CourseManager";
 import {ProtectedRoute} from "./ProtectedRoute";
 import {useAuth} from '../hooks/useAuth'
 import MySpinner from "./UI/spinner/MySpinner";
+import Analytics from "./Analytics";
 
 const AppRouter = () => {
     const { isAuthenticated } = useAuth();
@@ -25,7 +26,7 @@ const AppRouter = () => {
                 <Route path="/admin" element={<AdminPage />} >
                     <Route path="users" element={<TableUsers />}/>
                     <Route path="courses" element={<CourseManager />}/>
-                    <Route path="analytics" element={<MySpinner />}/>
+                    <Route path="analytics" element={<Analytics />}/>
                     <Route path="tests" element={<MySpinner />}/>
                 </Route>
             {/*</Route>*/}

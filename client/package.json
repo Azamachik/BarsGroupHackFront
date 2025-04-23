@@ -13,6 +13,7 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@mui/lab": "^7.0.0-beta.11",
     "@mui/material": "^7.0.2",
+    "@mui/x-charts": "^8.0.0",
     "@mui/x-data-grid": "^7.28.3",
     "@mui/x-data-grid-pro": "^7.28.3",
     "@mui/x-tree-view": "^7.28.1",
