@@ -1,5 +1,5 @@
 import AdminPage from "../pages/AdminPage";
-import TableUsers from "../components/TableUsers";
+import TableUsers from "../components/Users/TableUsers";
 import PageNotFound from "../pages/PageNotFound";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";

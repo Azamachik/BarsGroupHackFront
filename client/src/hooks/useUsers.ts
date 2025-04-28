@@ -14,8 +14,7 @@ const useUsers = () => {
             setUsers(response.data.filter(user => !user.isDeleted));
             setError(null);
         } catch (err) {
-            setError('Failed to fetch users');
-            console.error('Error fetching users:', err);
+            setError('Ошибка загрузки данных!');
         } finally {
             setLoading(false);
         }
@@ -27,7 +26,6 @@ const useUsers = () => {
             setUsers(prev => [...prev, response.data]);
             return true;
         } catch (err) {
-            console.error('Error adding user:', err);
             return false;
         }
     };
@@ -38,7 +36,6 @@ const useUsers = () => {
             setUsers(prev => prev.filter(user => user.id !== id));
             return true;
         } catch (err) {
-            console.error('Error deleting user:', err);
             return false;
         }
     };
@@ -49,7 +46,6 @@ const useUsers = () => {
             setUsers(prev => prev.filter(user => user.id !== id));
             return true;
         } catch (err) {
-            console.error('Error soft deleting user:', err);
             return false;
         }
     };
@@ -60,17 +56,15 @@ const useUsers = () => {
             await fetchUsers();
             return true;
         } catch (err) {
-            console.error('Error restoring user:', err);
             return false;
         }
     };
 
     const getDeletedUsers = async () => {
         try {
-            const response = await apiClient.get<IUser[]>('/users?deleted=true');
+            const response = await apiClient.get<IUser[]>('/users?is_deleted=true');
             return response.data.filter(user => user.isDeleted);
         } catch (err) {
-            console.error('Error fetching deleted users:', err);
             return [];
         }
     };

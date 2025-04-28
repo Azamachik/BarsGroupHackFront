@@ -1,18 +1,32 @@
 import React, {ReactElement} from "react";
 import {AxiosError, AxiosResponse} from "axios";
 
+export interface IQuizOption {
+    id: number;
+    question_id: number;
+    text: string;
+    is_correct: boolean;
+    is_deleted?: boolean;
+}
+export interface IUsersListProps {
+    users: IUser[];
+    onSelect: (userId: number) => void;
+    loading?: boolean;
+}
 
 export interface IUser {
+    progress: number;
+    avatar: string | undefined;
     id: number;
     username: string;
     name: string;
     surname: string;
-    email: string;
-    role: string;
+    email?: string;
+    role?: string;
     phone?: string;
     age?: number;
     joinDate?: string;
-    lastActive?: string;
+    lastLogin?: string;
     isDeleted?: boolean;
     courses?: {
         id: string;
@@ -167,6 +181,66 @@ export interface IQuizLessonContent {
 
 export type ILessonContent = ITextLessonContent | IVideoLessonContent | IQuizLessonContent;
 
+export interface IUserProgress {
+    user: (value: IUserProgress, index: number, array: IUserProgress[]) => IUser;
+    userId: string;
+    courseId: string;
+    progress: number;
+    lastActivity: Date;
+    modules: {
+        [moduleId: string]: {
+            progress: number;
+            lessonsCompleted: number;
+            testsCompleted: number;
+        };
+    };
+}
+export interface ITest {
+    id: string;
+    title: string;
+    score?: number;
+    maxScore: number;
+    attempts: ITestAttempt[];
+    isPassed?: boolean;
+}
+
+export interface ITestAttempt {
+    id: string;
+    date: Date;
+    score: number;
+    answers: {
+        questionId: string;
+        isCorrect: boolean;
+        userAnswer: string;
+    }[];
+}
+export interface IProgressData {
+    courses: ICourse[];
+    userProgress: IUserProgress[];
+    selectedUserProgress?: IUserProgress & {
+        user: IUser;
+        detailedProgress: {
+            modules: {
+                id: string;
+                name: string;
+                progress: number;
+                lessons: {
+                    id: string;
+                    title: string;
+                    isCompleted: boolean;
+                    completionDate?: Date;
+                }[];
+                tests: {
+                    id: string;
+                    title: string;
+                    score?: number;
+                    isPassed: boolean;
+                    attempts: ITestAttempt[];
+                }[];
+            }[];
+        };
+    };
+}
 export interface IApiError {
     message: string;
     code?: string;
@@ -264,3 +338,4 @@ export interface IProgress {
     completionDate: Date;
     status: 'started' | 'completed' | 'failed';
 }
+

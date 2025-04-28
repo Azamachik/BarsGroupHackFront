@@ -8,7 +8,6 @@ export const useAuth = () => {
     const [user, setUser] = useState<IAuthUser | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
-
     const [loginMutation] = useMutation(LOGIN_MUTATION);
     const [checkAuthQuery] = useLazyQuery(CHECK_AUTH_QUERY);
 

@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import apiClient from '../API/ClientService';
 import { IAxiosApiError, ICourse, ILesson, IModule } from "../types/types";
+// import { IAxiosApiError, ICourse, ILesson, IModule, ILessonContent, IQuizQuestion } from "../types/types";
 
-const
-    useCourses = () => {
+
+const useCourses = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -14,7 +15,7 @@ const
             return response.data;
         } catch (err: unknown) {
             const error = err as IAxiosApiError;
-            setError(error.response?.data?.message || 'Failed to fetch courses');
+            setError(error.response?.data?.message || 'Ошибка загрузки данных!');
             throw error;
         } finally {
             setLoading(false);
@@ -28,7 +29,7 @@ const
             return response.data;
         } catch (err: unknown) {
             const error = err as IAxiosApiError;
-            setError(error.response?.data?.message || 'Failed to create course');
+            setError(error.response?.data?.message || 'Ошибка при создании курса');
             throw error;
         } finally {
             setLoading(false);
@@ -45,7 +46,7 @@ const
             return response.data;
         } catch (err: unknown) {
             const error = err as IAxiosApiError;
-            setError(error.response?.data?.message || 'Failed to update course');
+            setError(error.response?.data?.message || 'Ошибка при обновлении курса');
             throw error;
         } finally {
             setLoading(false);
@@ -58,7 +59,7 @@ const
             await apiClient.delete(`/courses/${courseId}`);
         } catch (err: unknown) {
             const error = err as IAxiosApiError;
-            setError(error.response?.data?.message || 'Failed to delete course');
+            setError(error.response?.data?.message || 'Ошибка при удалении курса');
             throw error;
         } finally {
             setLoading(false);
@@ -75,7 +76,7 @@ const
             return response.data;
         } catch (err: unknown) {
             const error = err as IAxiosApiError;
-            setError(error.response?.data?.message || 'Failed to create module');
+            setError(error.response?.data?.message || 'Ошибка при создании модуля');
             throw error;
         } finally {
             setLoading(false);
@@ -96,7 +97,7 @@ const
             return response.data;
         } catch (err: unknown) {
             const error = err as IAxiosApiError;
-            setError(error.response?.data?.message || 'Failed to update module');
+            setError(error.response?.data?.message || 'Ошибка при обновлении модуля');
             throw error;
         } finally {
             setLoading(false);
@@ -109,7 +110,7 @@ const
             await apiClient.delete(`/courses/${courseId}/modules/${moduleId}`);
         } catch (err: unknown) {
             const error = err as IAxiosApiError;
-            setError(error.response?.data?.message || 'Failed to delete module');
+            setError(error.response?.data?.message || 'Ошибка при удалении модуля');
             throw error;
         } finally {
             setLoading(false);
@@ -130,7 +131,7 @@ const
             return response.data;
         } catch (err: unknown) {
             const error = err as IAxiosApiError;
-            setError(error.response?.data?.message || 'Failed to create lesson');
+            setError(error.response?.data?.message || 'Ошибка при создании урока');
             throw error;
         } finally {
             setLoading(false);
@@ -152,7 +153,7 @@ const
             return response.data;
         } catch (err: unknown) {
             const error = err as IAxiosApiError;
-            setError(error.response?.data?.message || 'Failed to update lesson');
+            setError(error.response?.data?.message || 'Ошибка при обновлении урока');
             throw error;
         } finally {
             setLoading(false);
@@ -167,7 +168,7 @@ const
             );
         } catch (err: unknown) {
             const error = err as IAxiosApiError;
-            setError(error.response?.data?.message || 'Failed to delete lesson');
+            setError(error.response?.data?.message || 'Ошибка при удалении урока');
             throw error;
         } finally {
             setLoading(false);

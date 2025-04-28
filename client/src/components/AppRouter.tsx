@@ -6,12 +6,12 @@ import RegisterForm from "./RegisterForm";
 import AdminForm from "./AdminForm";
 import HomePage from "../pages/HomePage";
 import AdminPage from "../pages/AdminPage";
-import TableUsers from "./TableUsers";
-import CourseManager from "./CourseManager";
+import TableUsers from "./Users/TableUsers";
+import CourseManager from "./Courses/CourseManager";
 import {ProtectedRoute} from "./ProtectedRoute";
 import {useAuth} from '../hooks/useAuth'
-import MySpinner from "./UI/spinner/MySpinner";
-import Analytics from "./Analytics";
+import Analytics from "./Analytics/Analytics";
+import ProgressReport from "./Report/ProgressReport";
 
 const AppRouter = () => {
     const { isAuthenticated } = useAuth();
@@ -27,7 +27,7 @@ const AppRouter = () => {
                     <Route path="users" element={<TableUsers />}/>
                     <Route path="courses" element={<CourseManager />}/>
                     <Route path="analytics" element={<Analytics />}/>
-                    <Route path="tests" element={<MySpinner />}/>
+                    <Route path="progress-report" element={<ProgressReport />}/>
                 </Route>
             {/*</Route>*/}
             <Route path="*" element={<PageNotFound />}/>

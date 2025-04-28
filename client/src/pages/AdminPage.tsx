@@ -10,7 +10,7 @@ const AdminPage = () => {
 
     return (
         <div>
-            <MyNavbar/>
+            <MyNavbar title="Панель администрирования"/>
             <Box sx={{
                 display: 'flex',
                 height: '100vh',

@@ -40,3 +40,38 @@ apiClient.interceptors.response.use(
 );
 
 export default apiClient;
+
+// export const fetchAllCourseData = async () => {
+//     try {
+//         const response = await apiClient.get('/courses/tree'); // Предполагаем, что есть такой endpoint
+//         return response.data;
+//     } catch (error) {
+//         console.error('Error fetching course data:', error);
+//         throw error;
+//     }
+// };
+// export const fetchAllCourseData = async () => {
+//     try {
+//         // Параллельно запрашиваем все необходимые данные
+//         const [coursesRes, modulesRes, lessonsRes, contentsRes, questionsRes, optionsRes] = await Promise.all([
+//             apiClient.get('/courses?is_deleted=false'),
+//             apiClient.get('/modules?is_deleted=false'),
+//             apiClient.get('/lessons?is_deleted=false'),
+//             apiClient.get('/lesson-contents?is_deleted=false'),
+//             apiClient.get('/quiz-questions?is_deleted=false'),
+//             apiClient.get('/quiz-options?is_deleted=false'),
+//         ]);
+//
+//         return {
+//             courses: coursesRes.data,
+//             modules: modulesRes.data,
+//             lessons: lessonsRes.data,
+//             contents: contentsRes.data,
+//             questions: questionsRes.data,
+//             options: optionsRes.data,
+//         };
+//     } catch (error) {
+//         console.error('Error fetching all course data:', error);
+//         throw error;
+//     }
+// };

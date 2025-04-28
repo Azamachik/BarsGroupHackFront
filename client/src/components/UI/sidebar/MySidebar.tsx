@@ -20,7 +20,7 @@ const MySidebar = () => {
                         <Link to={'/admin/courses'}><FontAwesomeIcon icon={faBook}/> Курсы</Link>
                     </li>
                     <li>
-                        <Link to={'/admin/tests'}><FontAwesomeIcon icon={faSquarePollVertical}/> Результаты тестов</Link>
+                        <Link to={'/admin/progress-report'}><FontAwesomeIcon icon={faSquarePollVertical}/> Успеваемость</Link>
                     </li>
                 </ul>
             </div>
